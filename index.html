@@ -26,7 +26,8 @@ try {
     var bool="";
     function bookmark_func(id) {
                 bookmarks.push(id);
-                console.log(bookmarks);
+                document.getElementById(id).setAttribute("class","fas fa-bookmark float-right");
+                //console.log(bookmarks);
             }
             function show_bookmarked() {
                 if(!bool){
@@ -52,6 +53,10 @@ try {
                         var idd = newsfeed[j];
                         document.getElementById("singlenews"+idd).removeAttribute("style");
                         document.getElementById("bm").setAttribute("class", "far fa-bookmark");
+                    }
+                    for(var k=0; k<bookmarks.length; k++) {
+                        var id = bookmarks[k];
+                        document.getElementById(id).setAttribute("class","fas fa-bookmark float-right");
                     }
                     bool = "";
                 }
@@ -125,6 +130,9 @@ try {
         margin-bottom: 50px;
     }
     .singlenews .far {
+        margin: 10px !important;
+    }
+    .singlenews .fas {
         margin: 10px !important;
     }
     .singlenews h4 {
