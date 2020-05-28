@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <!--<link href="/your-path-to-fontawesome/css/fontawesome.css" rel="stylesheet">-->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+       <div style="margin:0px auto; width:600px"> <div class="container-fluid" id="newsfeed">
+           
+        </div>
+    </div>
+    <div class="footer"><span style="font-size: 3em;"></span><i class="far fa-bookmark" value="true" onclick="show_bookmarked()" id="bm"></i></span></div>
+<script>
+try {
+    var url = 'http://newsapi.org/v2/top-headlines?' +
+          'country=us&' +
+          'apiKey=cda6993807cb4ef4b42d4121b56525d5';
+    var req = new Request(url);
+    var single_news = [];
+    var bookmarks = [];
+    var newsfeed = [];
+    var bool="";
+    function bookmark_func(id) {
+                bookmarks.push(id);
+                console.log(bookmarks);
+            }
+            function show_bookmarked() {
+                if(!bool){
+                    var index=0;
+
+                    for (var i=0; i<bookmarks.length; i++) {
+                        var bookmark = parseInt(bookmarks[i]);
+                        index = newsfeed.indexOf(bookmark); 
+                        if (index > -1) { 
+                            newsfeed.splice(index, 1);
+                        }
+                    }
+                    console.log(newsfeed);
+                    for(var j=0; j<newsfeed.length; j++){
+                        var idd = newsfeed[j];
+                        document.getElementById("singlenews"+idd).setAttribute("style","display:none !important");
+                        document.getElementById("bm").setAttribute("class", "fas fa-bookmark");
+                    }
+                    bool = true;
+                }
+                else {
+                    for(var j=0; j<newsfeed.length; j++){
+                        var idd = newsfeed[j];
+                        document.getElementById("singlenews"+idd).removeAttribute("style");
+                        document.getElementById("bm").setAttribute("class", "far fa-bookmark");
+                    }
+                    bool = "";
+                }
+                
+            }
+            function arr_diff (a1, a2) {
+
+                var a = [], diff = [];
+
+                for (var i = 0; i < a1.length; i++) {
+                    a[a1[i]] = true;
+                }
+
+                for (var i = 0; i < a2.length; i++) {
+                    if (a[a2[i]]) {
+                        delete a[a2[i]];
+                    } else {
+                        a[a2[i]] = true;
+                    }
+                }
+
+                for (var k in a) {
+                    diff.push(k);
+                }
+
+                return diff;
+            }
+    fetch(req).then(function(response) {
+            return response.json();
+        }).then(function(data) {
+            var news = data; 
+            var articles = news.articles;
+            var i;
+            for (i = 0; i < articles.length; i++) {
+                newsfeed.push(i);
+                var main_node = document.createElement("div");
+                main_node.setAttribute("id","singlenews"+i);
+                main_node.setAttribute("class","singlenews");
+                document.getElementById("newsfeed").appendChild(main_node);
+                single_news[i] = { author: articles[i].author, title: articles[i].title, imagesrc:articles[i].urlToImage};
+                var singlenewsdiv = document.getElementById("singlenews"+i);
+                //appending author name
+                var node1 = document.createElement("h4");
+                node1.innerHTML = single_news[i].author;
+                singlenewsdiv.appendChild(node1);
+                //appending image
+                var node2 = document.createElement("img");
+                node2.setAttribute("src", single_news[i].imagesrc);
+                node2.setAttribute("width", "100%");
+                node2.setAttribute("height", "auto");
+                singlenewsdiv.appendChild(node2);
+                //appending like comment share save
+                var node4 = document.createElement("p");
+                node4.innerHTML = '<span style="font-size: 2em;"><i class="far fa-heart"></i><i class="far fa-comment"></i><i class="far fa-bookmark float-right" id="'+i+'" onclick="bookmark_func(this.id)"></i></span>';
+                singlenewsdiv.appendChild(node4);
+                //appending title
+                var node3 = document.createElement("p");
+                node3.setAttribute("class","title");
+                node3.innerHTML = single_news[i].title;
+                singlenewsdiv.appendChild(node3);
+            }
+    })
+} catch(err) {
+  alert(err); // Failed to fetch
+}
+</script>
+<style>
+    .singlenews {
+        border: 1px solid rgba(var(--b6a,219,219,219),1);
+        padding: 10px 0px;
+        margin-bottom: 50px;
+    }
+    .singlenews .far {
+        margin: 10px !important;
+    }
+    .singlenews h4 {
+        margin: 10px 10px;
+    }
+    .singlenews .title {
+        font-size: 20px;
+        margin: 0px 10px;
+    }
+    .footer {
+        border: 1px solid rgba(var(--b6a,219,219,219),1);
+        background: white;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+    }
+</style>
+</body>
+</html>  
