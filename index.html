@@ -84,11 +84,12 @@ try {
 
                 return diff;
             }
-    fetch(req).then(function(response) {
-            return response.json();
-        }).then(function(data) {
-            var news = data; 
-            var articles = news.articles;
+   // fetch(req).then(function(response) {
+   //         return response.json();
+   //     }).then(function(data) {
+   //         var news = data; 
+   //         var articles = news.articles;
+            articles = [{author:"John", title:"Lorem Ipsum Dolo Sit", urlToImage:"https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg"},{author:"John", title:"Lorem Ipsum Dolo Sit", urlToImage:"https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg"},{author:"John", title:"Lorem Ipsum Dolo Sit", urlToImage:"https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg"}];
             var i;
             for (i = 0; i < articles.length; i++) {
                 newsfeed.push(i);
@@ -117,11 +118,11 @@ try {
                 node3.setAttribute("class","title");
                 node3.innerHTML = single_news[i].title;
                 singlenewsdiv.appendChild(node3);
-            }
+  /*          }
     })
 } catch(err) {
   alert(err); // Failed to fetch
-}
+}*/
 </script>
 <style>
     .singlenews {
